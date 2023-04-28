@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import {
-   debounceTime, distinctUntilChanged, switchMap
+   debounceTime, distinctUntilChanged, filter, map, switchMap, tap
  } from 'rxjs/operators';
 
 import { Hero } from '../hero';
@@ -34,6 +34,9 @@ export class HeroSearchComponent implements OnInit {
       distinctUntilChanged(),
 
       // switch to new search observable each time the term changes
+      filter((term: string) => term.length > 1),
+      tap(term => console.log("tap", term)),
+      map(term => "c" + term),
       switchMap((term: string) => this.heroService.searchHeroes(term)),
     );
   }
