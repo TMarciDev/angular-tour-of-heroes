@@ -11,6 +11,7 @@ import { HeroService } from '../hero.service';
   styleUrls: ['./hero-detail.component.css']
 })
 export class HeroDetailComponent {
+  @Input() hero?: Hero;
   constructor(
     private route: ActivatedRoute,
     private heroService: HeroService,
@@ -24,8 +25,13 @@ export class HeroDetailComponent {
     this.heroService.getHero(id)
       .subscribe(hero => this.hero = hero);
   }
+  save(): void {
+    if (this.hero) {
+      this.heroService.updateHero(this.hero)
+        .subscribe(() => this.goBack());
+    }
+  }
   goBack(): void {
     this.location.back();
   }
-  @Input() hero?: Hero;
 }
